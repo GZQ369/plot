@@ -6,13 +6,12 @@ mpl.rcParams['font.sans-serif'] = ['SimHei']
 matplotlib.style.use("ggplot")
 #matplotlib.style.use("dark_background")
 
-print('sdsdadsa‘')
 ls = pd.read_excel('万科京东数据采集表7.6.xlsx2.xlsx',sheetname="数据采集表")
 
 labels=['室外温度','室内平均温度','整体耗电量','冷冻水供回水温差']
 '''sizes=15,20,45,10
 colors='yellowgreen','gold','lightskyblue','lightcoral'
-explode=0,0.1,0,0'''
+'''
 names = ['2018/7/5', '2018/7/6', '2018/7/6', '2018/7/7', '2018/7/8','2018/7/9','2018/7/10','2018/7/11','2018/7/12','2018/7/13','2018/7/14','2018/7/15','2018/7/16','2018/7/17','2018/7/18']
 x = ls[["时间"]]
 y = ls[["气温"]]
@@ -20,6 +19,14 @@ z = ls["耗电量"]#取耗电量以lg10为底的对数
 le = ls["冷冻水回水温度"]-ls["冷冻水供水温度"]
 m = ls["平均室温"]
 plt.figure(1)
+
+# z1 = np.polyfit(x, y, 3)#用3次多项式拟合
+# p1 = np.poly1d(z1)  #拟合出多项式方程
+# #print(p1) #在屏幕上打印拟合多项式
+# yvals=p1(x)#也可以使用yvals=np.polyval(z1,x)
+# plot1=plt.plot(x, y, '*',label='original values')
+# plot2=plt.plot(x, yvals, 'r',label='polyfit values')
+
 plt.plot(x,y,linewidth=1,marker='^', color='blue',mec='darkblue', ms=4 ,mfc='w',label=u'室外温度')
 
 
