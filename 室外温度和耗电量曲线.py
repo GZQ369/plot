@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 from pylab import *                                 #支持中文
 mpl.rcParams['font.sans-serif'] = ['SimHei']
+mpl.rcParams['axes.unicode_minus']=False #用来正常显示负号
 matplotlib.style.use("ggplot")
 #matplotlib.style.use("dark_background")
 
@@ -23,19 +24,23 @@ n = ls["冷机耗电量"]
 plt.figure(1)
 #plt.plot(x,y,linewidth=1,marker='^', color='blue',mec='darkblue', ms=4 ,mfc='w',label=u'室外温度')
 print(y.corr(n))
-xf = ls[["气温","冷机耗电量"]]
-xe = xf.drop_duplicates('气温') #删除重复气温的行
-# print(xe)
-z1 = np.polyfit(xe['气温'], xe['冷机耗电量'], 3)#用3次多项式拟合
-p1 = np.poly1d(z1)
-print(p1) #在屏幕上打印拟合多项式
-yvals=p1(xe['气温'])#也可以使用yvals=np.polyval(z1,x)
-# plot1=plt.plot(x, y, '*',label='original values')
-plot2=plt.plot(xe['气温'], yvals, 'r',label=u'相关系数为：0.337179389096')
+nx = ls[["冷机耗电量","气温"]].groupby('气温').mean()
+print(nx["冷机耗电量"])
+
+# xf = ls[["气温","冷机耗电量"]]
+# xe = xf.drop_duplicates('气温') #删除重复气温的行
+# # print(xe)
+# z1 = np.polyfit(xe['气温'], xe['冷机耗电量'], 3)#用3次多项式拟合
+# p1 = np.poly1d(z1)
+# print(p1) #在屏幕上打印拟合多项式
+# yvals=p1(xe['气温'])#也可以使用yvals=np.polyval(z1,x)
+# # plot1=plt.plot(x, y, '*',label='original values')
+# plot2=plt.plot(xe['气温'], yvals, 'r',label=u'相关系数为：0.337179389096')
 
 #plt.plot(x,m,linewidth=1,color='red')#平均室温
-# plt.plot(xe['气温'],xe['冷机耗电量'],linewidth=2, color='g',label=u'相关系数为：0.337179389096')#耗电量
-#plt.scatter(x,le,linewidth=1,marker='v', color='y',ms=4,  mfc='w',label=u'冷冻水供回水温差')
+plt.plot(nx['冷机耗电量'],linewidth=2, color='g',label='')#耗电量
+plt.ylim(125,400)
+# plt.scatter(y,n,color='g',s=17)
 #mfc='w'表示空心     mec='g'表示标记的颜色绿色  ms=3表示空心的范围大小
 plt.legend()  # 让图例生效
 
@@ -47,5 +52,3 @@ plt.title("室外温度——耗电量关系图") #标题
 
 #plt.pie(sizes,explode=explode,labels=labels,colors=colors,autopct='%1.1f%%',shadow=True,startangle=50)
 plt.show()
-# plt.rcParams['font.sas-serig']=['SimHei'] #用来正常显示中文标签
-# plt.rcParams['axes.unicode_minus']=False #用来正常显示负号
