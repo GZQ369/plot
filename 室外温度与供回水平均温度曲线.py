@@ -10,11 +10,6 @@ matplotlib.style.use("ggplot")
 
 ls = pd.read_excel('万科京东数据采集表7.6.xlsx2.xlsx',sheetname="数据采集表")
 
-labels=['室外温度','室内平均温度','整体耗电量','冷冻水供回水温差']
-'''sizes=15,20,45,10
-colors='yellowgreen','gold','lightskyblue','lightcoral'
-explode=0,0.1,0,0'''
-names = ['2018/7/5', '2018/7/6', '2018/7/6', '2018/7/7', '2018/7/8','2018/7/9','2018/7/10','2018/7/11','2018/7/12','2018/7/13','2018/7/14','2018/7/15','2018/7/16','2018/7/17','2018/7/18']
 x = ls["时间"]
 y = ls["气温"]
 df = ls["平均温度"]
@@ -22,11 +17,19 @@ z = ls["耗电量"]#取耗电量以lg10为底的对数
 le = ls["冷冻水回水温度"]-ls["冷冻水供水温度"]
 m = ls["平均室温"]
 n = ls["冷机耗电量"]
+sh = ls["升温"]
 s = np.arange(21,36 , 1)
 plt.figure(1)
-nx = ls[["耗电量","气温","平均温度"]].groupby('气温').mean()
-print(nx["耗电量"])
+# nx = ls[["耗电量","气温","平均温度"]].groupby('气温').mean()
+# print(nx["耗电量"])
 
+nx = ls[(sh>0)]
+print(nx[["气温","平均温度"]])
+ze = ls[(sh==0)]
+jx = ls[(sh<0)]
+plt.scatter(nx["气温"],nx["平均温度"],color='r',s=17,label='温度上升')
+plt.scatter(ze["气温"],ze["平均温度"],color='g',s=17,label='温度不变')
+plt.scatter(jx["气温"],jx["平均温度"],color='b',s=17,label='温度下降')
 #plt.plot(x,y,linewidth=1,marker='^', color='blue',mec='darkblue', ms=4 ,mfc='w',label=u'室外温度')
 print(y.corr(df))
 # xf = ls[["气温","平均温度"]]
@@ -43,8 +46,8 @@ print(y.corr(df))
 
 
 #plt.plot(x,m,linewidth=1,color='red')#平均室温
-plt.plot(nx['平均温度'],linewidth=2, color='g')#耗电量
-plt.ylim(7.0, 15.0)
+# plt.plot(nx['平均温度'],linewidth=2, color='g')#耗电量
+# plt.ylim(7.0, 15.0)
 # plt.scatter(y,df,s=18,label=u'冷冻水供回水温度')
 #mfc='w'表示空心     mec='g'表示标记的颜色绿色  ms=3表示空心的范围大小
 plt.legend()  # 让图例生效
